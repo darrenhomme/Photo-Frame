@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-Version = "Photoframe 1.1"
+Version = "Photoframe 1.2"
 import pygame
 import io
 import os
@@ -61,12 +61,12 @@ def GetPictures():
         random.shuffle(picturesInFolder)
         for picture in picturesInFolder:
             UpdateScreen(picture)
-            for i in range(8*60*3):
+            for i in range(60*3):
+                time.sleep(1)
                 for event in pygame.event.get(): 
                     if event.type == pygame.KEYDOWN:
                          if event.key == pygame.K_ESCAPE or event.unicode == 'q':
                             pygame.quit()
                             exit()
-                time.sleep(1/8)
 
 GetPictures()
