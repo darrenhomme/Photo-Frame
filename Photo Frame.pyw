@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-Version = "Photoframe 1.3"
+Version = "Photoframe 1.4"
 import pygame
 import io
 import os
@@ -28,21 +28,22 @@ def UpdateScreen(pictureFile):
     image = pygame.image.load(pictureFile)
 
     imageSize = image.get_rect().size
-    ratio = imageSize[0] / imageSize[1]
+    ratio = float(imageSize[0]) / float(imageSize[1])
 
-    if (ratio < ((screenWidth/screenHeight) -.05)):
+    if (ratio < ((float(screenWidth)/float(screenHeight)) -.1)):
         #Tall
-        width  = int(screenHeight * (imageSize[0] / imageSize[1]))
+        width  = int(float(screenHeight) * (float(imageSize[0]) / float(imageSize[1])))
         height = screenHeight
-    elif (ratio >= ((screenWidth/screenHeight) -.05)) and (ratio <= ((screenWidth/screenHeight) +.05)):
+    elif (ratio >= ((float(screenWidth)/float(screenHeight)) -.1)) and (ratio <= ((float(screenWidth)/float(screenHeight)) +.1)):
         #Screen Size
         width  = screenWidth
         height = screenHeight
     else:
         #Wide
         width = screenWidth
-        height = int(screenWidth * (imageSize[1] / imageSize[0]))
+        height = int(float(screenWidth) * (float(imageSize[1]) / float(imageSize[0])))
 
+    print(screenWidth, screenHeight, float(screenWidth)/float(screenHeight), imageSize[0], imageSize[1], float(imageSize[0])/float(imageSize[1]))
     image = pygame.transform.smoothscale(image, (width, height))
 
     bgImage = image
