@@ -2,7 +2,7 @@
     <head>
         <title>Darren's Photo Frame</title>
     </head>
-    <body bgcolor="grey" style="margin:4; padding:40" link="blue" vlink="blue">
+    <body bgcolor="grey" style="margin:4; padding:5" link="blue" vlink="blue">
         <?php
             $thisfile = basename($_SERVER['SCRIPT_FILENAME']);
             $value = $_GET['value'];
@@ -12,7 +12,9 @@
             #Table structure and links to repoert types
             echo "<table bgcolor=\"white\" style=\"width:900px\" align=\"center\"><tr><td>";
             echo "<center>";
-            echo "<h1>Darren's Photo Frame<hr width=\"700px\"></h1><h2><a href=" . $thisfile . "?value=exit>Exit</a></h2><hr width=\"400px\">";
+            echo "<h1>Darren's Photo Frame<hr width=\"700px\"></h1>";
+            #echo "<h2><a href=" . $thisfile . "?value=exit>Exit</a></h2>";
+            #echo "<hr width=\"400px\">";
             #echo "<h2><a href=" . $thisfile . "?value=start>Start</a></h2>";
             #echo "<p><a href=" . $thisfile . "?value=next>Next Image</a></p>";
 
@@ -38,18 +40,16 @@
             echo "</center></tr></td></table>";
 
             if ($value != "") {
-                if ($value == "start") {
-                    #echo exec("python home/PhotoFrame.pyw");
-                }elseif ($value == "exit") {
-                    $myfile = fopen("home/ExitPhotoFrame.txt", "w");
+                if ($value == "exit") {
+                    $myfile = fopen("home/UpdatePhotoFrame.txt", "w");
                     fwrite($myfile, "exit");
                     fclose($myfile);
                 }elseif ($value == "next") {
-                    $myfile = fopen("home/ExitPhotoFrame.txt", "w");
+                    $myfile = fopen("home/UpdatePhotoFrame.txt", "w");
                     fwrite($myfile, "next");
                     fclose($myfile);
                 }else {
-                    $myfile = fopen("home/ExitPhotoFrame.txt", "w");
+                    $myfile = fopen("home/UpdatePhotoFrame.txt", "w");
                     $value = str_replace("%20"," ",$value);
                     fwrite($myfile, $value);
                     fclose($myfile);
