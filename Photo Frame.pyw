@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-Version = "Photoframe 1.4"
+Version = "Photoframe 1.5"
 import pygame
 import io
 import os
@@ -43,7 +43,6 @@ def UpdateScreen(pictureFile):
         width = screenWidth
         height = int(float(screenWidth) * (float(imageSize[1]) / float(imageSize[0])))
 
-    print(screenWidth, screenHeight, float(screenWidth)/float(screenHeight), imageSize[0], imageSize[1], float(imageSize[0])/float(imageSize[1]))
     image = pygame.transform.smoothscale(image, (width, height))
 
     bgImage = image
@@ -67,35 +66,28 @@ def GetPictures():
                     picturesInFolder.append(directory + file)
 
         random.shuffle(picturesInFolder)
+        breakSleepLoop = False
         for picture in picturesInFolder:
             UpdateScreen(picture)
-            for i in range(60*3):
-                exitFile = open("/home/pi/ExitPhotoFrame.txt", "r")
+            for i in range(8*60*3):
+                if breakSleepLoop == True:
+                    breakSleepLoop = False
+                    break
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        breakSleepLoop = True
+                exitFile = open("/home/pi/UpdatePhotoFrame.txt", "r")
                 exitFileTxt = str(exitFile.read())
                 if exitFileTxt.find("exit") > -1:
-                   exitFile = open("/home/pi/ExitPhotoFrame.txt", "w")
+                   exitFile = open("/home/pi/UpdatePhotoFrame.txt", "w")
                    exitFile.write("")
                    exitFile.close()
-                   pygame.quit()
                    exit()
-                elif exitFileTxt.find("next") > -1:
-                   exitFile = open("/home/pi/ExitPhotoFrame.txt", "w")
-                   exitFile.write("")
-                   exitFile.close()
-                   break
                 elif exitFileTxt.find(directory) > -1:
-                    print(exitFileTxt)
-                    UpdateScreen(exitFileTxt)
-                    exitFile = open("/home/pi/ExitPhotoFrame.txt", "w")
+                    exitFile = open("/home/pi/UpdatePhotoFrame.txt", "w")
                     exitFile.write("")
                     exitFile.close()
-                    i = 0
-                time.sleep(1)
-                #for event in pygame.event.get():
-                   #if event.type == pygame.KEYDOWN:
-                        #if event.key == pygame.K_ESCAPE or event.unicode == 'q':
-                           #pygame.quit()
-                            #exit()
-                #time.sleep(1)
+                    UpdateScreen(exitFileTxt)
+                time.sleep(0.125)
 
 GetPictures()
